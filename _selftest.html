@@ -8,6 +8,7 @@
 <meta name="description" content="在线人民币大写转换工具：输入小写金额即时生成财务规范的人民币大写，如 1234.56 转成「人民币壹仟贰佰叁拾肆元伍角陆分」。支持千分位、全角数字与 ¥ 符号，一键复制；依据中国人民银行《支付结算办法》附一。纯浏览器本地运行，无需安装、不上传数据。">
 <meta name="keywords" content="人民币大写,金额大写,小写金额转大写,大写金额转换,数字转中文大写,财务大写,支票金额大写,报销单据大写,人民币大写转换器">
 <meta name="robots" content="index, follow">
+<meta name="author" content="williechen0746">
 <meta name="theme-color" content="#f4f5f8" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0d0f14" media="(prefers-color-scheme: dark)">
 <link rel="canonical" href="https://williechen0746.github.io/rmb-uppercase-converter/">
@@ -43,6 +44,21 @@
   "inLanguage": "zh-CN",
   "isAccessibleForFree": true,
   "image": "https://williechen0746.github.io/rmb-uppercase-converter/og-image.png",
+  "datePublished": "2026-09-22",
+  "dateModified": "2026-09-22",
+  "author": {
+    "@type": "Person",
+    "name": "williechen0746",
+    "url": "https://github.com/williechen0746"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "williechen0746",
+    "url": "https://github.com/williechen0746"
+  },
+  "codeRepository": "https://github.com/williechen0746/rmb-uppercase-converter",
+  "sameAs": ["https://github.com/williechen0746/rmb-uppercase-converter"],
+  "isBasedOn": "https://www.cncc.cn/zcfg/200903/t20090323_286.html",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
   "featureList": [
     "小写金额转财务规范人民币大写",
@@ -50,6 +66,55 @@
     "一键复制大写结果",
     "深色模式与手机屏幕自适应",
     "纯本地运行，不上传任何数据"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "inLanguage": "zh-CN",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "大写金额一定要写「人民币」字样吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "要写。依据《正确填写票据和结算凭证的基本规定》第三条，中文大写金额数字前应标明「人民币」字样，并紧接填写、不得留有空白；未印「人民币」字样的，应加填「人民币」三字。本页的「加“人民币”前缀」开关默认不勾选，便于只取纯大写数字；用于票据等正式凭证时应勾选。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "金额到「角」为止时，后面要不要写「整」？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "可写可不写。规定第二条：金额到「元」为止的，应在「元」后写「整」（或「正」）；到「角」为止的，「角」之后可以不写。本工具默认写出「整」，可用「元」后写「整」开关关闭。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "数字中间有 0 怎么写？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "中间有 0 时写「零」，连续多个 0 只写一个「零」，例如 1001 写成壹仟零壹。按第四条（三），万位或元位是 0 而千位、角位不是 0 时，中文大写可以只写一个「零」，也可以不写「零」；本工具统一采用写一个「零」的写法。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "输入的金额会被上传或保存吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "不会上传。全部计算在本地浏览器完成，不联网、不写入服务器。「最近记录」仅保存在你自己浏览器的本地存储中，随时可点该栏的「清除」删除。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "可以填多大的金额？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "整数最多 20 位，即到「亿亿」级；小数最多 2 位。超出范围或格式不合法时会给出提示，不做静默截断。"
+      }
+    }
   ]
 }
 </script>
@@ -216,6 +281,27 @@
   .hitem .h-num { font-family: var(--mono); font-size: 13px; color: var(--text-faint); flex: none; }
   .hitem .h-up { font-size: 14px; font-weight: 600; color: var(--text-dim); letter-spacing: .03em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+  /* 说明与常见问题 */
+  .prose { font-size: 13.5px; line-height: 1.85; color: var(--text-dim); }
+  .prose p { margin: 0 0 10px; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose b { color: var(--text); font-weight: 600; }
+  .prose a {
+    color: var(--accent); text-decoration: none;
+    border-bottom: 1px solid var(--accent-line);
+  }
+  .prose a:hover { border-bottom-color: var(--accent); }
+  .prose code, .faq code {
+    font-family: var(--mono); font-size: 12.5px;
+    background: var(--surface-solid); border: 1px solid var(--border);
+    border-radius: 6px; padding: 1px 6px;
+  }
+  .faq { margin: 0; }
+  .faq > div { margin-bottom: 15px; }
+  .faq > div:last-child { margin-bottom: 0; }
+  .faq dt { font-size: 13.5px; font-weight: 650; color: var(--text); margin-bottom: 5px; }
+  .faq dd { margin: 0; font-size: 13px; line-height: 1.8; color: var(--text-dim); }
+
   footer { font-size: 12px; color: var(--text-faint); line-height: 1.85; padding: 0 4px; }
   footer b { color: var(--text-dim); font-weight: 600; }
   footer a {
@@ -273,6 +359,51 @@
   <section class="card" id="historyCard" hidden>
     <div class="label"><span>最近记录</span><button class="icon-btn" id="clearHistory" type="button">清除</button></div>
     <div class="history" id="history"></div>
+  </section>
+
+  <section class="card">
+    <div class="label"><span>关于本工具</span></div>
+    <div class="prose">
+      <p>输入小写金额，即时转换成财务规范的人民币大写，可直接用于报销单、支票、合同及各类票据的填写。
+        全部计算在浏览器本地完成，<b>输入的金额不会上传到任何服务器</b>，无需注册、无需联网，打开即用、完全免费。</p>
+      <p>转换规则依据中国人民银行<a href="https://www.cncc.cn/zcfg/200903/t20090323_286.html" target="_blank" rel="noopener noreferrer">《支付结算办法》</a>附一《正确填写票据和结算凭证的基本规定》。</p>
+      <p>支持范围：整数最多 20 位（到「亿亿」级），小数最多 2 位（角、分）。输入容错涵盖千分位
+        <code>1,234.56</code>、全角数字 <code>１２３</code>、<code>¥</code> 符号与首尾空格；负数会在大写前加「负」。
+        格式与数值不合规时会给出提示，不做静默截断。</p>
+      <p>本工具为纯前端开源项目，源码托管于<a href="https://github.com/williechen0746/rmb-uppercase-converter" target="_blank" rel="noopener noreferrer">GitHub</a>。</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="label"><span>常见问题</span></div>
+    <dl class="faq">
+      <div>
+        <dt>大写金额一定要写「人民币」字样吗？</dt>
+        <dd>要写。依据《正确填写票据和结算凭证的基本规定》第三条，中文大写金额数字前应标明「人民币」字样，
+          并紧接填写、不得留有空白；未印「人民币」字样的，应加填「人民币」三字。本页的「加“人民币”前缀」
+          开关<b>默认不勾选</b>，便于只取纯大写数字；用于票据等正式凭证时应勾选。</dd>
+      </div>
+      <div>
+        <dt>金额到「角」为止时，后面要不要写「整」？</dt>
+        <dd>可写可不写。规定第二条：金额到「元」为止的，应在「元」后写「整」（或「正」）；到「角」为止的，
+          「角」之后可以不写。本工具默认写出「整」，可用「元」后写「整」开关关闭。</dd>
+      </div>
+      <div>
+        <dt>数字中间有 0 怎么写？</dt>
+        <dd>中间有 0 时写「零」，连续多个 0 只写一个「零」，例如 <code>1001</code> 写成壹仟零壹。
+          按第四条（三），万位或元位是 0 而千位、角位不是 0 时，中文大写可以只写一个「零」，也可以不写「零」；
+          本工具统一采用写一个「零」的写法。</dd>
+      </div>
+      <div>
+        <dt>输入的金额会被上传或保存吗？</dt>
+        <dd>不会上传。全部计算在本地浏览器完成，不联网、不写入服务器。「最近记录」仅保存在你自己浏览器的本地存储中，
+          随时可点该栏的「清除」删除。</dd>
+      </div>
+      <div>
+        <dt>可以填多大的金额？</dt>
+        <dd>整数最多 20 位，即到「亿亿」级；小数最多 2 位。超出范围或格式不合法时会给出提示，不做静默截断。</dd>
+      </div>
+    </dl>
   </section>
 
   <footer>
