@@ -133,3 +133,37 @@ PY
 | `badInputs` | 9 | 非法输入必须被拒绝 |
 | `fmtCases` | 4 | `formatAmount` 千分位 |
 | `tolerance` | 5 | 千分位、`￥`、全角、number 入参、首尾空格 |
+
+## 部署（GitHub Pages）
+
+已部署至 GitHub Pages，仓库 `williechen0746/rmb-uppercase-converter`（公开）：
+
+- 线上地址：`https://williechen0746.github.io/rmb-uppercase-converter/`
+- 来源：`main` 分支根目录（`build_type: legacy`），已强制 HTTPS
+
+纯静态、无构建，因此**推送到 `main` 即自动发布**，无需任何 CI 配置。
+
+### 关键陷阱：`.nojekyll` 不可删除
+
+GitHub Pages 默认启用 Jekyll，而 **Jekyll 会忽略所有以 `_` 开头的文件**。本项目的 `_selftest.html` 因此返回 404——**在本地与 `python3 -m http.server` 下却完全正常，极易漏掉**。
+
+仓库根目录的空文件 `.nojekyll` 就是用来关闭 Jekyll 的，**必须保留**。今后新增任何 `_` 开头的文件，都要确认该文件仍在，并实地访问新文件确认为 200。
+
+### 发布后须实地核验（本次实际踩到）
+
+首次构建完成、`curl` 已返回 200 之后，CDN 边缘节点仍可能残留短暂不一致：本次本地核验时曾出现自检页加载 `rmb-upper.js` 失败（`window.RMBUpper` 为 `undefined`、断言报 `Cannot read properties of undefined`），**约一分钟后自愈，重跑即 5/5 PASS**。因此发布后若遇到偶发资源加载失败，**先等待并重试再判定为缺陷**，不要急着改代码。
+
+### 发布核验清单
+
+```bash
+B=https://williechen0746.github.io/rmb-uppercase-converter
+for f in / /index.html /rmb-upper.js /_selftest.html; do
+  printf '%-18s -> %s\n' "$f" "$(curl -s -o /dev/null -w '%{http_code}' "$B$f")"
+done
+```
+
+再于浏览器打开 `$B/_selftest.html`，确认 `window.__SELFTEST__` 全部为 PASS。
+
+### 版本控制约定
+
+`.workbuddy/`（工作记录与缓存）已写入 `.gitignore`，**不进入版本库、不随公开仓库发布**。涉及内部流程或个人偏好的内容请留在该目录内，不要提交到仓库。
