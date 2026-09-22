@@ -2,6 +2,8 @@
 
 输入小写金额，实时转换成财务规范的人民币大写。纯前端单页，**无需安装、无需联网**。
 
+**在线使用（免安装）：** <https://williechen0746.github.io/rmb-uppercase-converter/>
+
 ## 使用
 
 双击 `index.html` 用浏览器打开即可（也可以用 `python3 -m http.server` 起个本地服务）。
@@ -19,6 +21,8 @@
 | `index.html` | 界面（结构 + 样式 + 交互，单文件自包含） |
 | `rmb-upper.js` | 核心转换逻辑，浏览器与 Node 通用 |
 | `test.js` | 核心逻辑测试，`node test.js` 运行 |
+| `_selftest.html` | 浏览器端自检页（`index.html` 的副本 + 自动化断言），用于验证浏览器集成链路 |
+| `.nojekyll` | 关闭 GitHub Pages 的 Jekyll 处理，否则以 `_` 开头的文件不会被发布 |
 
 ## 转换规则
 
