@@ -301,6 +301,31 @@
   .faq dt { font-size: 13.5px; font-weight: 650; color: var(--text); margin-bottom: 5px; }
   .faq dd { margin: 0; font-size: 13px; line-height: 1.8; color: var(--text-dim); }
 
+  /* 折叠板块（默认收起，点击展开） */
+  details.card { padding: 0; }
+  details.card > summary {
+    /* 切勿在此改 display：Safari 下把 <summary> 设为 flex 会让它失去点击展开能力。
+       布局交给内部 span，summary 保持默认的 list-item。 */
+    list-style: none; cursor: pointer; user-select: none;
+    padding: 17px 18px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--text-faint); text-transform: uppercase;
+    transition: color .14s;
+  }
+  details.card > summary::-webkit-details-marker { display: none; }
+  details.card > summary:hover { color: var(--accent); }
+  details.card[open] > summary { color: var(--text-dim); }
+  details.card > summary > span {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  details.card > summary > span::after {
+    content: ""; width: 7px; height: 7px; flex: none; margin-top: -3px;
+    border-right: 1.6px solid currentColor; border-bottom: 1.6px solid currentColor;
+    transform: rotate(45deg); transition: transform .18s;
+  }
+  details.card[open] > summary > span::after { transform: rotate(225deg); margin-top: 3px; }
+  details.card > .body { padding: 0 18px 18px; }
+
   footer { font-size: 12px; color: var(--text-faint); line-height: 1.85; padding: 0 4px; }
   footer b { color: var(--text-dim); font-weight: 600; }
   footer a {
@@ -360,51 +385,6 @@
     <div class="history" id="history"></div>
   </section>
 
-  <section class="card">
-    <div class="label"><span>关于本工具</span></div>
-    <div class="prose">
-      <p>输入小写金额，即时转换成财务规范的人民币大写，可直接用于报销单、支票、合同及各类票据的填写。
-        全部计算在浏览器本地完成，<b>输入的金额不会上传到任何服务器</b>，无需注册、无需联网，打开即用、完全免费。</p>
-      <p>转换规则依据中国人民银行<a href="https://www.cncc.cn/zcfg/200903/t20090323_286.html" target="_blank" rel="noopener noreferrer">《支付结算办法》</a>附一《正确填写票据和结算凭证的基本规定》。</p>
-      <p>支持范围：整数最多 20 位（到「亿亿」级），小数最多 2 位（角、分）。输入容错涵盖千分位
-        <code>1,234.56</code>、全角数字 <code>１２３</code>、<code>¥</code> 符号与首尾空格；负数会在大写前加「负」。
-        格式与数值不合规时会给出提示，不做静默截断。</p>
-      <p>本工具为纯前端开源项目，源码托管于<a href="https://github.com/williechen0746/rmb-uppercase-converter" target="_blank" rel="noopener noreferrer">GitHub</a>。</p>
-    </div>
-  </section>
-
-  <section class="card">
-    <div class="label"><span>常见问题</span></div>
-    <dl class="faq">
-      <div>
-        <dt>大写金额一定要写「人民币」字样吗？</dt>
-        <dd>要写。依据《正确填写票据和结算凭证的基本规定》第三条，中文大写金额数字前应标明「人民币」字样，
-          并紧接填写、不得留有空白；未印「人民币」字样的，应加填「人民币」三字。本页的「加“人民币”前缀」
-          开关<b>默认不勾选</b>，便于只取纯大写数字；用于票据等正式凭证时应勾选。</dd>
-      </div>
-      <div>
-        <dt>金额到「角」为止时，后面要不要写「整」？</dt>
-        <dd>可写可不写。规定第二条：金额到「元」为止的，应在「元」后写「整」（或「正」）；到「角」为止的，
-          「角」之后可以不写。本工具默认写出「整」，可用「元」后写「整」开关关闭。</dd>
-      </div>
-      <div>
-        <dt>数字中间有 0 怎么写？</dt>
-        <dd>中间有 0 时写「零」，连续多个 0 只写一个「零」，例如 <code>1001</code> 写成壹仟零壹。
-          按第四条（三），万位或元位是 0 而千位、角位不是 0 时，中文大写可以只写一个「零」，也可以不写「零」；
-          本工具统一采用写一个「零」的写法。</dd>
-      </div>
-      <div>
-        <dt>输入的金额会被上传或保存吗？</dt>
-        <dd>不会上传。全部计算在本地浏览器完成，不联网、不写入服务器。「最近记录」仅保存在你自己浏览器的本地存储中，
-          随时可点该栏的「清除」删除。</dd>
-      </div>
-      <div>
-        <dt>可以填多大的金额？</dt>
-        <dd>整数最多 20 位，即到「亿亿」级；小数最多 2 位。超出范围或格式不合法时会给出提示，不做静默截断。</dd>
-      </div>
-    </dl>
-  </section>
-
   <footer>
     <b>转换规则</b>（依据中国人民银行《支付结算办法》附一<a
       href="https://www.cncc.cn/zcfg/200903/t20090323_286.html"
@@ -413,6 +393,53 @@
     ② 金额到“元”为止的，元后写“整”；到“角”为止的，角后可写“整”；有“分”的，分后不写“整”；<br>
     ③ 数字中间有 0 时写“零”，连续多个 0 只写一个“零”，如 1001 → 壹仟零壹。
   </footer>
+
+  <details class="card">
+    <summary><span>关于本工具</span></summary>
+    <div class="body prose">
+      <p>输入小写金额，即时转换成财务规范的人民币大写，可直接用于报销单、支票、合同及各类票据的填写。
+        全部计算在浏览器本地完成，<b>输入的金额不会上传到任何服务器</b>，无需注册、无需联网，打开即用、完全免费。</p>
+      <p>转换规则依据中国人民银行<a href="https://www.cncc.cn/zcfg/200903/t20090323_286.html" target="_blank" rel="noopener noreferrer">《支付结算办法》</a>附一《正确填写票据和结算凭证的基本规定》。</p>
+      <p>支持范围：整数最多 20 位（到「亿亿」级），小数最多 2 位（角、分）。输入容错涵盖千分位
+        <code>1,234.56</code>、全角数字 <code>１２３</code>、<code>¥</code> 符号与首尾空格；负数会在大写前加「负」。
+        格式与数值不合规时会给出提示，不做静默截断。</p>
+      <p>本工具为纯前端开源项目，源码托管于<a href="https://github.com/williechen0746/rmb-uppercase-converter" target="_blank" rel="noopener noreferrer">GitHub</a>。</p>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary><span>常见问题</span></summary>
+    <div class="body">
+      <dl class="faq">
+        <div>
+          <dt>大写金额一定要写「人民币」字样吗？</dt>
+          <dd>要写。依据《正确填写票据和结算凭证的基本规定》第三条，中文大写金额数字前应标明「人民币」字样，
+            并紧接填写、不得留有空白；未印「人民币」字样的，应加填「人民币」三字。本页的「加“人民币”前缀」
+            开关<b>默认不勾选</b>，便于只取纯大写数字；用于票据等正式凭证时应勾选。</dd>
+        </div>
+        <div>
+          <dt>金额到「角」为止时，后面要不要写「整」？</dt>
+          <dd>可写可不写。规定第二条：金额到「元」为止的，应在「元」后写「整」（或「正」）；到「角」为止的，
+            「角」之后可以不写。本工具默认写出「整」，可用「元」后写「整」开关关闭。</dd>
+        </div>
+        <div>
+          <dt>数字中间有 0 怎么写？</dt>
+          <dd>中间有 0 时写「零」，连续多个 0 只写一个「零」，例如 <code>1001</code> 写成壹仟零壹。
+            按第四条（三），万位或元位是 0 而千位、角位不是 0 时，中文大写可以只写一个「零」，也可以不写「零」；
+            本工具统一采用写一个「零」的写法。</dd>
+        </div>
+        <div>
+          <dt>输入的金额会被上传或保存吗？</dt>
+          <dd>不会上传。全部计算在本地浏览器完成，不联网、不写入服务器。「最近记录」仅保存在你自己浏览器的本地存储中，
+            随时可点该栏的「清除」删除。</dd>
+        </div>
+        <div>
+          <dt>可以填多大的金额？</dt>
+          <dd>整数最多 20 位，即到「亿亿」级；小数最多 2 位。超出范围或格式不合法时会给出提示，不做静默截断。</dd>
+        </div>
+      </dl>
+    </div>
+  </details>
 </div>
 
 <script src="rmb-upper.js"></script>
