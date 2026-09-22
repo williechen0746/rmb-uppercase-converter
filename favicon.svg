@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="人民币大写转换工具">
+  <rect width="64" height="64" rx="14" fill="#c62b2b"/>
+  <text x="32" y="47" text-anchor="middle"
+        font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica, Arial, sans-serif"
+        font-size="42" font-weight="700" fill="#ffffff">¥</text>
+</svg>

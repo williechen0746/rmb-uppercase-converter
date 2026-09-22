@@ -23,6 +23,9 @@
 | `test.js` | 核心逻辑测试，`node test.js` 运行 |
 | `_selftest.html` | 浏览器端自检页（`index.html` 的副本 + 自动化断言），用于验证浏览器集成链路 |
 | `.nojekyll` | 关闭 GitHub Pages 的 Jekyll 处理，否则以 `_` 开头的文件不会被发布 |
+| `favicon.svg` | 站点图标 |
+| `og-image.png` | 社交分享预览图（1200×630） |
+| `sitemap.xml` | 搜索引擎站点地图 |
 
 ## 转换规则
 

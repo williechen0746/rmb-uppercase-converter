@@ -60,7 +60,9 @@ io.open('_selftest.html', 'w', encoding='utf-8').write(idx[:-len(tail)] + '\n' +
 PY
 ```
 
-校验同步是否成立：`_selftest.html` 应以「`index.html` 去掉结尾 tail」为前缀。注意行号（如"前 N 行相同"）会随改动漂移，不要把它当判据。
+校验同步是否成立：`_selftest.html` 应以「`index.html` 去掉结尾 tail」为前缀。注意行号（如“前 N 行相同”）会随改动漂移，不要把它当判据。
+
+> **上面是简版，会丢掉 `_selftest.html` 的 `noindex` 注入。正式同步请用「搜索优化（SEO）配置」一节里的完整脚本**，其校验方式也见该节。
 
 `_selftest.html` 的自检结果写入 `window.__SELFTEST__` 数组，并渲染到 id 为 `SELFTEST` 的 `div` 里（格式 `<<<PASS | 名称 ;; FAIL | 名称 | got=...>>>`）——这是给自动化抓取用的，不要删。它依赖 60ms 防抖，故用例间插入了 `await after(200)` 等待。
 
@@ -167,3 +169,35 @@ done
 ### 版本控制约定
 
 `.workbuddy/`（工作记录与缓存）已写入 `.gitignore`，**不进入版本库、不随公开仓库发布**。涉及内部流程或个人偏好的内容请留在该目录内，不要提交到仓库。
+
+## 搜索优化（SEO）配置
+
+页面内容全部写在 HTML 里、不依赖 JS 渲染，可被爬虫正常抓取。已配置项：
+
+- **`<title>`**——含核心检索词「人民币大写转换」「小写金额转中文大写」。
+- **`meta description` / `keywords`**——描述内含具体示例（`1234.56` → …），便于生成摘要。
+- **`link rel="canonical"`**——指向 `https://williechen0746.github.io/rmb-uppercase-converter/`。**一旦更换域名或仓库名，此处必须同步更新**，否则会指向错误地址。
+- **JSON-LD**——`WebApplication` 结构化数据。改动后须用 `JSON.parse` 校验语法，避免整块失效。
+- **Open Graph / Twitter Card**——`og:image` 指向 `og-image.png`（1200×630），`twitter:card` 为 `summary_large_image`。
+- 另有 `favicon.svg`、`sitemap.xml`、明暗两套 `theme-color`、`hreflang`。
+
+### 两个容易忽略的点
+
+1. **项目型 Pages 站点上的 `robots.txt` 无效。** 爬虫只读取主机根的 `https://williechen0746.github.io/robots.txt`，仓库内的 `<repo>/robots.txt` 不会被读取。本项目因此**不放 robots.txt**，改用页面内 `<meta name="robots">` 控制收录。
+2. **`_selftest.html` 已注入 `noindex, nofollow`。** 它是 `index.html` 的近似重复页，不应被收录。该 meta 不能写在 `index.html` 里（会被同步脚本一并带过去），只能由同步脚本在生成副本时插入——**重跑同步必须包含这一步**，否则副本会重新变成可索引页。
+
+### 同步脚本（含 noindex 注入，取代上文简版）
+
+```python
+import io
+idx = io.open('index.html', encoding='utf-8').read()
+sel = io.open('_selftest.html', encoding='utf-8').read()
+tail = '</body>\n</html>\n'
+block = sel[sel.rindex('\n<script>\n') + 1:]          # 末尾自检块，原样保留
+new = idx[:-len(tail)] + '\n' + block
+a = '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+new = new.replace(a, a + '<meta name="robots" content="noindex, nofollow">\n', 1)
+io.open('_selftest.html', 'w', encoding='utf-8').write(new)
+```
+
+校验：去掉该注入行后，副本应以「`index.html` 去掉结尾 tail」为前缀，且 `noindex` 在副本中只出现 1 次、在主页面中为 0 次。
